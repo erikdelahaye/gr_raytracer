@@ -68,16 +68,24 @@ int tensor4_mult(tensor4** pp_tensors, char* indices, int num, tensor4** pp_tens
 
     *pp_tensor_out = malloc(sizeof(tensor4));
     (*pp_tensor_out)->rank = output_rank;
+    (*pp_tensor_out)->vals = malloc((int) pow(4.0, (double) output_rank) * sizeof(double));
 
     int* output_indices = malloc(output_rank * sizeof(int));
-    int recursion_depth = 0;
 
-    tensor4_mult_recursive_output_indexing(output_indices, recursion_depth, output_rank, pp_tensors, num, pp_tensor_out);
+    tensor4_mult_recursive_output_indexing(output_indices, 0, pp_tensors, num, pp_tensor_out);
     return 0;
 }
 
 
-int tensor4_mult_recursive_output_indexing(int* output_indices, int recursion_depth, int output_rank, tensor4** pp_tensors, int num, tensor4** pp_tensor_out) {
-    // TODO: Add recursion
+int tensor4_mult_recursive_output_indexing(int* output_indices, int recursion_depth, tensor4** pp_tensors, int num, tensor4** pp_tensor_out) {
+    if (recursion_depth == (*pp_tensor_out)->rank) {
+        // TODO
+    } else {
+        for (int i = 0; i < 4; i++) {
+            output_indices[recursion_depth] = i;
+            recursion_depth++;
+            tensor4_mult_recursive_output_indexing(output_indices, recursion_depth, pp_tensors, num, pp_tensor_out);
+        }
+    }
     return 0;
 }
