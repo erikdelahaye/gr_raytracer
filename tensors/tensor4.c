@@ -4,6 +4,7 @@
 
 #include "tensor4.h"
 #include "../util/string_util.h"
+#include "../util/array_util.h"
 
 tensor4* tensor4_zeros(int rank) {
     tensor4* p_tensor_out = malloc(sizeof(tensor4));
@@ -109,7 +110,19 @@ int tensor4_mult_recursive_sum_indexing(int* output_indices, int* sum_indices, i
             }
         }
 
-        // TODO
+        double temp_addend = 1;
+        int used_indices = 0;
+        for (int i = 0; i < num; i++) {
+            double temp_val;
+            tensor4_at_array(pp_tensors[i], indices+used_indices, &temp_val);
+            temp_addend *= temp_val;
+            used_indices += pp_tensors[i]->rank;
+        }
+
+        int output_index;
+        array_index_from_index_array(output_indices, (*pp_tensor_out)->rank, &output_index);
+
+        (*pp_tensor_out)->vals[output_index] += temp_addend;
     } else {
         recursion_depth++;
         for (int i = 0; i < 4; i++) {
@@ -118,5 +131,13 @@ int tensor4_mult_recursive_sum_indexing(int* output_indices, int* sum_indices, i
         }
 
     }
+    return 0;
+}
+
+
+int tensor4_at_array(tensor4* p_tensor, int* indices, double* p_out_value) {
+    int index;
+    array_index_from_index_array(indices, p_tensor->rank, &index);
+    *p_out_value = p_tensor->vals[index];
     return 0;
 }

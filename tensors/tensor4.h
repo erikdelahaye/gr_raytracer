@@ -18,4 +18,6 @@ int tensor4_mult_recursive_output_indexing(int* output_indices, int recursion_de
 
 int tensor4_mult_recursive_sum_indexing(int* output_indices, int* sum_indices, int recursion_depth, tensor4** pp_tensors, int num, int** double_occurrences, int num_double_occurrences, tensor4** pp_tensor_out);
 
+int tensor4_at_array(tensor4* p_tensor, int* indices, double* p_out_value);
+
 #endif
