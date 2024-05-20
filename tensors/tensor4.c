@@ -92,5 +92,31 @@ int tensor4_mult_recursive_output_indexing(int* output_indices, int recursion_de
 
 
 int tensor4_mult_recursive_sum_indexing(int* output_indices, int* sum_indices, int recursion_depth, tensor4** pp_tensors, int num, int** double_occurrences, int num_double_occurrences, tensor4** pp_tensor_out) {
+    if (recursion_depth == num_double_occurrences) {
+        // build array of indices
+        int total_indices = (*pp_tensor_out)->rank + 2*num_double_occurrences;
+        int indices[total_indices];
+
+        int next_output_index = 0;
+        for (int i = 0; i < total_indices; i++) {
+            indices[i] = output_indices[next_output_index];
+            next_output_index++;
+            for (int j = 0; j < num_double_occurrences; j++) {
+                if (i == double_occurrences[j][0] || i == double_occurrences[j][1]) {
+                    indices[i] = sum_indices[j];
+                    next_output_index--;
+                }
+            }
+        }
+
+        // TODO
+    } else {
+        recursion_depth++;
+        for (int i = 0; i < 4; i++) {
+            sum_indices[recursion_depth] = i;
+            tensor4_mult_recursive_sum_indexing(output_indices, sum_indices, recursion_depth, pp_tensors, num, double_occurrences, num_double_occurrences, pp_tensor_out);
+        }
+
+    }
     return 0;
 }
