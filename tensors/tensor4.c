@@ -70,19 +70,21 @@ int tensor4_mult(tensor4** pp_tensors, char* indices, int num, tensor4** pp_tens
 
     int* output_indices = malloc(output_rank * sizeof(int));
 
-    tensor4_mult_recursive_output_indexing(output_indices, 0, pp_tensors, num, pp_tensor_out);
+    tensor4_mult_recursive_output_indexing(output_indices, 0, pp_tensors, num, double_occurrences, pp_tensor_out);
     return 0;
 }
 
 
-int tensor4_mult_recursive_output_indexing(int* output_indices, int recursion_depth, tensor4** pp_tensors, int num, tensor4** pp_tensor_out) {
+int tensor4_mult_recursive_output_indexing(int* output_indices, int recursion_depth, tensor4** pp_tensors, int num, int** double_occurrences, int num_double_occurrences, tensor4** pp_tensor_out) {
     if (recursion_depth == (*pp_tensor_out)->rank) {
-        // TODO
+        recursion_depth = 0;
+        int* sum_indices = malloc(num_double_occurrences * sizeof(int));
+        tensor4_mult_recursive_sum_indexing(output_indices, sum_indices, recursion_depth, pp_tensors, num, double_occurrences, num_double_occurrences, pp_tensor_out);
     } else {
         for (int i = 0; i < 4; i++) {
             output_indices[recursion_depth] = i;
             recursion_depth++;
-            tensor4_mult_recursive_output_indexing(output_indices, recursion_depth, pp_tensors, num, pp_tensor_out);
+            tensor4_mult_recursive_output_indexing(output_indices, recursion_depth, pp_tensors, num, double_occurrences, num_double_occurrences, pp_tensor_out);
         }
     }
     return 0;
