@@ -43,7 +43,7 @@ int tensor4_mult(tensor4** pp_tensors, char* indices, int num, tensor4** pp_tens
     int second_occurrence = 1,
         num_double_occurrences = 0;
 
-    int** double_occurrences;
+    int** double_occurrences = malloc(sizeof(int*));
 
     while (indices[second_occurrence] != '\0') {
         for (int first_occurrence = 0; first_occurrence < second_occurrence; first_occurrence++) {
@@ -81,9 +81,9 @@ int tensor4_mult_recursive_output_indexing(int* output_indices, int recursion_de
         int* sum_indices = malloc(num_double_occurrences * sizeof(int));
         tensor4_mult_recursive_sum_indexing(output_indices, sum_indices, recursion_depth, pp_tensors, num, double_occurrences, num_double_occurrences, pp_tensor_out);
     } else {
+        recursion_depth++;
         for (int i = 0; i < 4; i++) {
             output_indices[recursion_depth] = i;
-            recursion_depth++;
             tensor4_mult_recursive_output_indexing(output_indices, recursion_depth, pp_tensors, num, double_occurrences, num_double_occurrences, pp_tensor_out);
         }
     }
@@ -92,5 +92,5 @@ int tensor4_mult_recursive_output_indexing(int* output_indices, int recursion_de
 
 
 int tensor4_mult_recursive_sum_indexing(int* output_indices, int* sum_indices, int recursion_depth, tensor4** pp_tensors, int num, int** double_occurrences, int num_double_occurrences, tensor4** pp_tensor_out) {
-
+    return 0;
 }
