@@ -16,6 +16,7 @@ tensor4* tensor4_zeros(int rank) {
     return p_tensor_out;
 }
 
+
 int tensor4_add(tensor4* p_tensor_a, tensor4* p_tensor_b, tensor4* p_tensor_out) {
     if (p_tensor_a->rank != p_tensor_b->rank) {
         fprintf(stderr, "tensor4_add recieved tensors of different ranks\n");
@@ -34,6 +35,7 @@ int tensor4_add(tensor4* p_tensor_a, tensor4* p_tensor_b, tensor4* p_tensor_out)
     p_tensor_out->rank = p_tensor_a->rank;
     return 0;
 }
+
 
 int tensor4_mult(tensor4** pp_tensors, char* indices, int num, tensor4** pp_tensor_out) {
     remove_spaces(indices);
@@ -64,6 +66,18 @@ int tensor4_mult(tensor4** pp_tensors, char* indices, int num, tensor4** pp_tens
 
     int output_rank = total_rank - 2*num_double_occurrences;
 
-    // TODO: add recursion
+    *pp_tensor_out = malloc(sizeof(tensor4));
+    (*pp_tensor_out)->rank = output_rank;
+
+    int* output_indices = malloc(output_rank * sizeof(int));
+    int recursion_depth = 0;
+
+    tensor4_mult_recursive_output_indexing(output_indices, recursion_depth, output_rank, pp_tensors, num, pp_tensor_out);
+    return 0;
+}
+
+
+int tensor4_mult_recursive_output_indexing(int* output_indices, int recursion_depth, int output_rank, tensor4** pp_tensors, int num, tensor4** pp_tensor_out) {
+    // TODO: Add recursion
     return 0;
 }
