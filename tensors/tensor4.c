@@ -66,9 +66,7 @@ int tensor4_mult(tensor4** pp_tensors, char* indices, int num, tensor4** pp_tens
 
     int output_rank = total_rank - 2*num_double_occurrences;
 
-    *pp_tensor_out = malloc(sizeof(tensor4));
-    (*pp_tensor_out)->rank = output_rank;
-    (*pp_tensor_out)->vals = malloc((int) pow(4.0, (double) output_rank) * sizeof(double));
+    *pp_tensor_out = tensor4_zeros(output_rank);
 
     int* output_indices = malloc(output_rank * sizeof(int));
 
