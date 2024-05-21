@@ -20,8 +20,21 @@ int main(int argc, char** argv) {
 
     printf("Rank is %d, entries are %f, %f, %f, %f.\n", p_c->rank, p_c->vals[0], p_c->vals[1], p_c->vals[2], p_c->vals[3]);
     */
-    tensor4* p_tens_a = tensor4_zeros(4);
-    tensor4* p_tens_b = tensor4_zeros(3);
+    tensor4* p_tens_a = tensor4_zeros(2);
+    tensor4* p_tens_b = tensor4_zeros(1);
+
+    p_tens_a->vals[0] = 3; // i=0, j=0
+    p_tens_a->vals[1] = 2; // i=1, j=0
+    p_tens_a->vals[2] = 3; // i=2, j=0
+    p_tens_a->vals[3] = 2; // i=3, j=0
+    p_tens_a->vals[5] = 1;
+    p_tens_a->vals[10] = 1;
+    p_tens_a->vals[15] = 1;
+
+    p_tens_b->vals[0] = 1;
+    p_tens_b->vals[1] = 2;
+    p_tens_b->vals[2] = 3;
+    p_tens_b->vals[3] = 4;
 
     tensor4** pp_tens_in = malloc(2*sizeof(tensor4*));
 
@@ -31,9 +44,12 @@ int main(int argc, char** argv) {
     tensor4** pp_tens_out = malloc(sizeof(tensor4*));
 
 
-    char indices[] = "ijkl lmn";
+    char indices[] = "ij j";
     tensor4_mult(pp_tens_in, indices, 2, pp_tens_out);
-    printf("%d", pp_tens_out[0]->rank);
+    printf("(%f, ", pp_tens_out[0]->vals[0]);
+    printf("%f, ", pp_tens_out[0]->vals[1]);
+    printf("%f, ", pp_tens_out[0]->vals[2]);
+    printf("%f)\n", pp_tens_out[0]->vals[3]);
     
     return 0;
 }
