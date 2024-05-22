@@ -1,6 +1,21 @@
 #include "../tensors/tensor4.h"
+#include "metrics.h"
+
 #include <math.h>
 #include <stdio.h>
+
+
+int metric_schwarzschild(enum Covariance cov, tensor4* p_tensor_event, double mass_BH, tensor4** pp_tensor_metric) {
+    if (cov == COVARIANT) {
+        return metric_schwarzschild_covariant(p_tensor_event, mass_BH, pp_tensor_metric);
+    } else if (cov == CONTRAVARIANT) {
+        return metric_schwarzschild_contravariant(p_tensor_event, mass_BH, pp_tensor_metric);
+    } else {
+        fprintf(stderr, "ERROR: Covariance can only be COVARIANT OR CONTRAVARIANT.");
+        return 1;
+    }
+}
+
 
 int metric_schwarzschild_covariant(tensor4* p_tensor_event, double mass_BH, tensor4** pp_tensor_metric) {
     (*pp_tensor_metric) = tensor4_zeros(2);
@@ -8,12 +23,28 @@ int metric_schwarzschild_covariant(tensor4* p_tensor_event, double mass_BH, tens
     double radius = p_tensor_event->vals[1];
     double sin_theta = sin(p_tensor_event->vals[2]);
 
-    double minus_g00 = 1.0 - 2.0 * mass_BH / radius;
+    double minus_g_00 = 1.0 - 2.0 * mass_BH / radius;
 
-    (*pp_tensor_metric)->vals[0] = -minus_g00;
-    (*pp_tensor_metric)->vals[5] = 1.0/minus_g00;
+    (*pp_tensor_metric)->vals[0] = -minus_g_00;
+    (*pp_tensor_metric)->vals[5] = 1.0/minus_g_00;
     (*pp_tensor_metric)->vals[10] = radius * radius;
     (*pp_tensor_metric)->vals[15] = radius * radius * sin_theta * sin_theta;
+    return 0;
+}
+
+
+int metric_schwarzschild_contravariant(tensor4* p_tensor_event, double mass_BH, tensor4** pp_tensor_metric) {
+    (*pp_tensor_metric) = tensor4_zeros(2);
+
+    double radius = p_tensor_event->vals[1];
+    double sin_theta = sin(p_tensor_event->vals[2]);
+
+    double minus_g_00 = 1.0 - 2.0 * mass_BH / radius;
+
+    (*pp_tensor_metric)->vals[0] = -1.0 / minus_g_00;
+    (*pp_tensor_metric)->vals[5] = minus_g_00;
+    (*pp_tensor_metric)->vals[10] = 1.0 / (radius * radius);
+    (*pp_tensor_metric)->vals[15] = 1.0 / (radius * radius * sin_theta * sin_theta);
     return 0;
 }
 
