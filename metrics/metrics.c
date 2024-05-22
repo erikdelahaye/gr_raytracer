@@ -75,13 +75,13 @@ int metric_kerr_covariant(tensor4* p_tensor_event, double mass_BH, double rot_pa
     double sigma = radius * radius + rot_param_a * rot_param_a * cos_theta * cos_theta;
     double delta = radius * radius - 2.0 * mass_BH * radius + rot_param_a * rot_param_a;
 
-    (*pp_tensor_metric)->vals[0] = 2.0 * mass_BH * radius / sigma - 1;
-    (*pp_tensor_metric)->vals[5] = sigma / delta;
-    (*pp_tensor_metric)->vals[10] = sigma;
-    (*pp_tensor_metric)->vals[15] = (radius * radius + rot_param_a * rot_param_a + 2.0 * mass_BH * radius * rot_param_a * rot_param_a / sigma * sin_theta * sin_theta) * sin_theta * sin_theta;
+    (*pp_tensor_metric)->vals[0] = 2.0 * mass_BH * radius / sigma - 1; // t-t
+    (*pp_tensor_metric)->vals[5] = sigma / delta; // r-r
+    (*pp_tensor_metric)->vals[10] = sigma; // theta-theta
+    (*pp_tensor_metric)->vals[15] = (radius * radius + rot_param_a * rot_param_a + 2.0 * mass_BH * radius * rot_param_a * rot_param_a / sigma * sin_theta * sin_theta) * sin_theta * sin_theta; // phi-phi
 
-    (*pp_tensor_metric)->vals[1] = -2.0 * mass_BH * radius * rot_param_a * sin_theta * sin_theta / sigma;
-    (*pp_tensor_metric)->vals[4] = (*pp_tensor_metric)->vals[1];
+    (*pp_tensor_metric)->vals[3] = -2.0 * mass_BH * radius * rot_param_a * sin_theta * sin_theta / sigma; // t-phi
+    (*pp_tensor_metric)->vals[12] = (*pp_tensor_metric)->vals[3]; // phi-t
     return 0;
 }
 
@@ -100,12 +100,12 @@ int metric_kerr_contravariant(tensor4* p_tensor_event, double mass_BH, double ro
     double sigma = radius * radius + rot_param_a * rot_param_a * cos_theta * cos_theta;
     double delta = radius * radius - 2.0 * mass_BH * radius + rot_param_a * rot_param_a;
 
-    (*pp_tensor_metric)->vals[0] = -(radius * radius + rot_param_a * rot_param_a + 2.0 * mass_BH * radius * rot_param_a * rot_param_a / sigma * sin_theta * sin_theta) / delta;
-    (*pp_tensor_metric)->vals[5] = delta / sigma;
-    (*pp_tensor_metric)->vals[10] = 1.0 / sigma;
-    (*pp_tensor_metric)->vals[15] = (1 - 2.0 * mass_BH * radius / sigma) / (delta * sin_theta * sin_theta);
+    (*pp_tensor_metric)->vals[0] = -(radius * radius + rot_param_a * rot_param_a + 2.0 * mass_BH * radius * rot_param_a * rot_param_a / sigma * sin_theta * sin_theta) / delta; // t-t
+    (*pp_tensor_metric)->vals[5] = delta / sigma; // r-r
+    (*pp_tensor_metric)->vals[10] = 1.0 / sigma; // theta-theta
+    (*pp_tensor_metric)->vals[15] = (1 - 2.0 * mass_BH * radius / sigma) / (delta * sin_theta * sin_theta); // phi-phi
 
-    (*pp_tensor_metric)->vals[1] = -2.0 * mass_BH * radius * rot_param_a / (sigma * delta);
-    (*pp_tensor_metric)->vals[4] = (*pp_tensor_metric)->vals[1];
+    (*pp_tensor_metric)->vals[3] = -2.0 * mass_BH * radius * rot_param_a / (sigma * delta); // t-phi
+    (*pp_tensor_metric)->vals[12] = (*pp_tensor_metric)->vals[3]; // phi-t
     return 0;
 }
