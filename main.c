@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #include "tensors/tensor4.h"
+#include "util/string_util.h"
 
 int main(int argc, char** argv) {
     /*
@@ -46,10 +47,8 @@ int main(int argc, char** argv) {
 
     char indices[] = "ij j";
     tensor4_mult(pp_tens_in, indices, 2, pp_tens_out);
-    printf("(%f, ", pp_tens_out[0]->vals[0]);
-    printf("%f, ", pp_tens_out[0]->vals[1]);
-    printf("%f, ", pp_tens_out[0]->vals[2]);
-    printf("%f)\n", pp_tens_out[0]->vals[3]);
+
+    print_tensor(*pp_tens_out);
     
     return 0;
 }
