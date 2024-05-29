@@ -173,7 +173,7 @@ if (recursion_depth == p_tensor->rank) {
     array_index_from_index_array(indices_old, recursion_depth, &index_old);
     array_index_from_index_array(indices_new, recursion_depth, &index_new);
 
-    p_tensor_out[index_new] = p_tensor[index_old];
+    p_tensor_out->vals[index_new] = p_tensor->vals[index_old];
 } else {
     for (int i = 0; i < 4; i++) {
         indices_old[recursion_depth] = i;
