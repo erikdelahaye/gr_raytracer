@@ -8,11 +8,15 @@ enum Covariance {
     CONTRAVARIANT
 };
 
+int metric_bh(enum Covariance cov, int th_derivative, tensor4* p_tensor_event, double mass_BH, double rot_param_a, tensor4** pp_tensor_metric);
+
 int metric_schwarzschild(enum Covariance cov, tensor4* p_tensor_event, double mass_BH, tensor4** pp_tensor_metric);
 
 int metric_schwarzschild_covariant(tensor4* p_tensor_event, double mass_BH, tensor4** pp_tensor_metric);
 
 int metric_schwarzschild_contravariant(tensor4* p_tensor_event, double mass_BH, tensor4** pp_tensor_metric);
+
+int metric_schwarzschild_derivative_covariant(tensor4* p_tensor_event, double mass_BH, tensor4** pp_tensor_metric);
 
 int metric_kerr(enum Covariance cov, tensor4* p_tensor_event, double mass_BH, double rot_param_a, tensor4** pp_tensor_metric);
 
