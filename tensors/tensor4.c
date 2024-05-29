@@ -1,6 +1,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "tensor4.h"
 #include "../util/string_util.h"
@@ -146,4 +147,40 @@ int tensor4_scalar_mult(tensor4* p_tensor, double factor, tensor4** pp_tensor_ou
         (*pp_tensor_out)->vals[i] = factor * p_tensor->vals[i];
     }
     return 0;
+}
+
+
+int tensor4_reorder(tensor4* p_tensor, char* indices_in, char* indices_out, tensor4** pp_tensor_out) {
+    (*pp_tensor_out) = tensor4_zeros(p_tensor->rank);
+
+    int reorder_instructions[p_tensor->rank];
+    int indices_old[p_tensor->rank];
+    int indices_new[p_tensor->rank];
+
+    for (int i = 0; i < p_tensor->rank; i++) {
+        reorder_instructions[i] = (int) (strchr(indices_out, indices_in[i]) - indices_out);
+    }
+
+    return tensor4_reorder_recursive(p_tensor, indices_old, indices_new, reorder_instructions, 0, *pp_tensor_out);
+}
+
+
+int tensor4_reorder_recursive(tensor4* p_tensor, int* indices_old, int* indices_new, int* reorder_instructions, int recursion_depth, tensor4* p_tensor_out) {
+if (recursion_depth == p_tensor->rank) {
+    int index_old;
+    int index_new;
+
+    array_index_from_index_array(indices_old, recursion_depth, &index_old);
+    array_index_from_index_array(indices_new, recursion_depth, &index_new);
+
+    p_tensor_out[index_new] = p_tensor[index_old];
+} else {
+    for (int i = 0; i < 4; i++) {
+        indices_old[recursion_depth] = i;
+        indices_new[reorder_instructions[recursion_depth]] = i;
+        tensor4_reorder_recursive(p_tensor, indices_old, indices_new, reorder_instructions, recursion_depth+1, p_tensor_out);
+    }
+}
+
+return 0;
 }
