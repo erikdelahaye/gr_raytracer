@@ -20,4 +20,6 @@ int tensor4_mult_recursive_sum_indexing(int* output_indices, int* sum_indices, i
 
 int tensor4_at_array(tensor4* p_tensor, int* indices, double* p_out_value);
 
+int tensor4_scalar_mult(tensor4* p_tensor, double factor, tensor4** pp_tensor_out);
+
 #endif

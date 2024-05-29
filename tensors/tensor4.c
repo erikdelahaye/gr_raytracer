@@ -138,3 +138,12 @@ int tensor4_at_array(tensor4* p_tensor, int* indices, double* p_out_value) {
     *p_out_value = p_tensor->vals[index];
     return 0;
 }
+
+
+int tensor4_scalar_mult(tensor4* p_tensor, double factor, tensor4** pp_tensor_out) {
+    *pp_tensor_out = tensor4_zeros(p_tensor->rank);
+    for (int i = 0; i < pow(4.0, (double) p_tensor->rank); i++) {
+        (*pp_tensor_out)->vals[i] = factor * p_tensor->vals[i];
+    }
+    return 0;
+}
