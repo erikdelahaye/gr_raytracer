@@ -26,9 +26,9 @@ tensor4* tensor4_add(tensor4* p_tensor_a, tensor4* p_tensor_b) {
 
     tensor4* p_tensor_out = malloc(sizeof(tensor4));
 
-    double num_entries = pow(4.0, (double) p_tensor_a->rank);
+    int num_entries = pow(4.0, (double) p_tensor_a->rank);
 
-    double entries[(int) pow(4.0, num_entries)];
+    double entries[num_entries];
     
     for (int i = 0; i < num_entries; i++) {
         entries[i] = p_tensor_a->vals[i] + p_tensor_b->vals[i];
