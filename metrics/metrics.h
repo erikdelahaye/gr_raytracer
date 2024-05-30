@@ -8,22 +8,22 @@ enum Covariance {
     CONTRAVARIANT
 };
 
-int metric_bh(enum Covariance cov, int th_derivative, tensor4* p_tensor_event, double mass_BH, double rot_param_a, tensor4** pp_tensor_metric);
+tensor4* metric_bh(enum Covariance cov, int th_derivative, tensor4* p_tensor_event, double mass_BH, double rot_param_a);
 
-int metric_schwarzschild(enum Covariance cov, tensor4* p_tensor_event, double mass_BH, tensor4** pp_tensor_metric);
+tensor4* metric_schwarzschild(enum Covariance cov, tensor4* p_tensor_event, double mass_BH);
 
-int metric_schwarzschild_covariant(tensor4* p_tensor_event, double mass_BH, tensor4** pp_tensor_metric);
+tensor4* metric_schwarzschild_covariant(tensor4* p_tensor_event, double mass_BH);
 
-int metric_schwarzschild_contravariant(tensor4* p_tensor_event, double mass_BH, tensor4** pp_tensor_metric);
+tensor4* metric_schwarzschild_contravariant(tensor4* p_tensor_event, double mass_BH);
 
-int metric_schwarzschild_derivative_covariant(tensor4* p_tensor_event, double mass_BH, tensor4** pp_tensor_metric);
+tensor4* metric_schwarzschild_derivative_covariant(tensor4* p_tensor_event, double mass_BH);
 
-int metric_kerr(enum Covariance cov, tensor4* p_tensor_event, double mass_BH, double rot_param_a, tensor4** pp_tensor_metric);
+tensor4* metric_kerr(enum Covariance cov, tensor4* p_tensor_event, double mass_BH, double rot_param_a);
 
-int metric_kerr_covariant(tensor4* p_tensor_event, double mass_BH, double rot_param_a, tensor4** pp_tensor_metric);
+tensor4* metric_kerr_covariant(tensor4* p_tensor_event, double mass_BH, double rot_param_a);
 
-int metric_kerr_contravariant(tensor4* p_tensor_event, double mass_BH, double rot_param_a, tensor4** pp_tensor_metric);
+tensor4* metric_kerr_contravariant(tensor4* p_tensor_event, double mass_BH, double rot_param_a);
 
-// TODO: int metric_wormhole_covariant();
+// TODO: tensor4* metric_wormhole_covariant();
 
 #endif

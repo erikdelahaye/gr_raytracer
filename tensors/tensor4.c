@@ -3,7 +3,6 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "tensor4.h"
 #include "../util/string_util.h"
 #include "../util/array_util.h"
 
@@ -19,11 +18,13 @@ tensor4* tensor4_zeros(int rank) {
 }
 
 
-int tensor4_add(tensor4* p_tensor_a, tensor4* p_tensor_b, tensor4* p_tensor_out) {
+tensor4* tensor4_add(tensor4* p_tensor_a, tensor4* p_tensor_b) {
     if (p_tensor_a->rank != p_tensor_b->rank) {
         fprintf(stderr, "tensor4_add recieved tensors of different ranks\n");
-        return 1;
+        return NULL;
     }
+
+    tensor4* p_tensor_out = malloc(sizeof(tensor4));
 
     double num_entries = pow(4.0, (double) p_tensor_a->rank);
 
@@ -35,11 +36,11 @@ int tensor4_add(tensor4* p_tensor_a, tensor4* p_tensor_b, tensor4* p_tensor_out)
 
     p_tensor_out->vals = entries;
     p_tensor_out->rank = p_tensor_a->rank;
-    return 0;
+    return p_tensor_out;
 }
 
 
-int tensor4_mult(tensor4** pp_tensors, char* indices, int num, tensor4** pp_tensor_out) {
+tensor4* tensor4_mult(tensor4** pp_tensors, char* indices, int num) {
     remove_spaces(indices);
     
     int second_occurrence = 1,
@@ -68,12 +69,12 @@ int tensor4_mult(tensor4** pp_tensors, char* indices, int num, tensor4** pp_tens
 
     int output_rank = total_rank - 2*num_double_occurrences;
 
-    *pp_tensor_out = tensor4_zeros(output_rank);
+    tensor4* p_tensor_out = tensor4_zeros(output_rank);
 
     int* output_indices = malloc(output_rank * sizeof(int));
 
-    tensor4_mult_recursive_output_indexing(output_indices, 0, pp_tensors, num, double_occurrences, num_double_occurrences, pp_tensor_out);
-    return 0;
+    tensor4_mult_recursive_output_indexing(output_indices, 0, pp_tensors, num, double_occurrences, num_double_occurrences, &p_tensor_out);
+    return p_tensor_out;
 }
 
 
@@ -110,16 +111,15 @@ int tensor4_mult_recursive_sum_indexing(int* output_indices, int* sum_indices, i
         }
 
         double temp_addend = 1;
+        double temp_val;
         int used_indices = 0;
         for (int i = 0; i < num; i++) {
-            double temp_val;
-            tensor4_at_array(pp_tensors[i], indices+used_indices, &temp_val);
+            temp_val = tensor4_at_array(pp_tensors[i], indices+used_indices);
             temp_addend *= temp_val;
             used_indices += pp_tensors[i]->rank;
         }
 
-        int output_index;
-        array_index_from_index_array(output_indices, (*pp_tensor_out)->rank, &output_index);
+        int output_index = array_index_from_index_array(output_indices, (*pp_tensor_out)->rank);
 
         (*pp_tensor_out)->vals[output_index] += temp_addend;
     } else {
@@ -133,25 +133,23 @@ int tensor4_mult_recursive_sum_indexing(int* output_indices, int* sum_indices, i
 }
 
 
-int tensor4_at_array(tensor4* p_tensor, int* indices, double* p_out_value) {
-    int index;
-    array_index_from_index_array(indices, p_tensor->rank, &index);
-    *p_out_value = p_tensor->vals[index];
-    return 0;
+double tensor4_at_array(tensor4* p_tensor, int* indices) {
+    int index = array_index_from_index_array(indices, p_tensor->rank);
+    return p_tensor->vals[index];
 }
 
 
-int tensor4_scalar_mult(tensor4* p_tensor, double factor, tensor4** pp_tensor_out) {
-    *pp_tensor_out = tensor4_zeros(p_tensor->rank);
+tensor4* tensor4_scalar_mult(tensor4* p_tensor, double factor) {
+    tensor4* p_tensor_out = tensor4_zeros(p_tensor->rank);
     for (int i = 0; i < pow(4.0, (double) p_tensor->rank); i++) {
-        (*pp_tensor_out)->vals[i] = factor * p_tensor->vals[i];
+        p_tensor_out->vals[i] = factor * p_tensor->vals[i];
     }
-    return 0;
+    return p_tensor_out;
 }
 
 
-int tensor4_reorder(tensor4* p_tensor, char* indices_in, char* indices_out, tensor4** pp_tensor_out) {
-    (*pp_tensor_out) = tensor4_zeros(p_tensor->rank);
+tensor4* tensor4_reorder(tensor4* p_tensor, char* indices_in, char* indices_out) {
+    tensor4* p_tensor_out = tensor4_zeros(p_tensor->rank);
 
     int reorder_instructions[p_tensor->rank];
     int indices_old[p_tensor->rank];
@@ -161,17 +159,15 @@ int tensor4_reorder(tensor4* p_tensor, char* indices_in, char* indices_out, tens
         reorder_instructions[i] = (int) (strchr(indices_out, indices_in[i]) - indices_out);
     }
 
-    return tensor4_reorder_recursive(p_tensor, indices_old, indices_new, reorder_instructions, 0, *pp_tensor_out);
+    tensor4_reorder_recursive(p_tensor, indices_old, indices_new, reorder_instructions, 0, p_tensor_out);
+    return p_tensor_out;
 }
 
 
 int tensor4_reorder_recursive(tensor4* p_tensor, int* indices_old, int* indices_new, int* reorder_instructions, int recursion_depth, tensor4* p_tensor_out) {
 if (recursion_depth == p_tensor->rank) {
-    int index_old;
-    int index_new;
-
-    array_index_from_index_array(indices_old, recursion_depth, &index_old);
-    array_index_from_index_array(indices_new, recursion_depth, &index_new);
+    int index_old = array_index_from_index_array(indices_old, recursion_depth);
+    int index_new = array_index_from_index_array(indices_new, recursion_depth);
 
     p_tensor_out->vals[index_new] = p_tensor->vals[index_old];
 } else {
