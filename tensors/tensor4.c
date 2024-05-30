@@ -41,7 +41,7 @@ tensor4* tensor4_add(tensor4* p_tensor_a, tensor4* p_tensor_b) {
 
 
 tensor4* tensor4_mult(tensor4** pp_tensors, char* indices, int num) {
-    remove_spaces(indices);
+    indices = remove_spaces(indices);
     
     int second_occurrence = 1,
         num_double_occurrences = 0;

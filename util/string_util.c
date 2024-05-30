@@ -1,18 +1,23 @@
 #include "string_util.h"
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-int remove_spaces(char* input) {
+char* remove_spaces(char* input) {
+    int str_size = strlen(input) + 1;
+    char* output = malloc(str_size * sizeof(char));
     int offset = 0, 
         i = 0;
     do {
         while (input[i+offset] == ' ') {
             offset++;
         }
-        input[i] = input[i+offset];
+        output[i] = input[i+offset];
         i++;
     } while (input[i+offset-1] != '\0');
-    return 0;
+    output = realloc(output, i * sizeof(char));
+    return output;
 }
 
 
