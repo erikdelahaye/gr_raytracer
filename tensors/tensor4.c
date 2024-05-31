@@ -176,3 +176,12 @@ if (recursion_depth == p_tensor->rank) {
 
 return 0;
 }
+
+
+tensor4* tensor4_derivative(tensor4* p_tensor, tensor4* p_event) {
+    tensor4* p_tensor_out = tensor4_zeros(p_tensor->rank + 1);
+    
+    // TODO
+
+    return p_tensor_out;
+}

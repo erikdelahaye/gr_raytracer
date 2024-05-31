@@ -26,4 +26,6 @@ tensor4* tensor4_reorder(tensor4* p_tensor, char* indices_in, char* indices_out)
 
 int tensor4_reorder_recursive(tensor4* p_tensor, int* indices_old, int* indices_new, int* reorder_instructions, int recursion_depth, tensor4* p_tensor_out);
 
+tensor4* tensor4_derivative(tensor4* p_tensor, tensor4* p_event);
+
 #endif
