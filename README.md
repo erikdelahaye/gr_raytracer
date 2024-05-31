@@ -48,7 +48,7 @@ A program to compute images of black holes (or other objects) while obeying gene
       - [X] Covariant
       - [ ] Contravariant
     - [ ] Kerr
-      - [ ] Covariant
+      - [X] Covariant
       - [ ] Contravariant
     - [ ] Reissner–Nordström
       - [ ] Covariant

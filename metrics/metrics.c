@@ -20,6 +20,8 @@ tensor4* metric_bh(enum Covariance cov, int th_derivative, tensor4* p_tensor_eve
         } else {
             if (th_derivative == 0) {
                 return metric_kerr_covariant(p_tensor_event, mass_BH, rot_param_a);
+            } else if (th_derivative == 1) {
+                return metric_kerr_derivative_covariant(p_tensor_event, mass_BH, rot_param_a);
             } else {
                 fprintf(stderr, "ERROR: metric_bh does not support the given parameters: covariant, th_derivative %d, rot_param_a %f", th_derivative, rot_param_a);
                 return NULL;
@@ -167,5 +169,37 @@ tensor4* metric_kerr_contravariant(tensor4* p_tensor_event, double mass_BH, doub
 
     p_tensor_metric->vals[3] = -2.0 * mass_BH * radius * rot_param_a / (sigma * delta); // t-phi
     p_tensor_metric->vals[12] = p_tensor_metric->vals[3]; // phi-t
+    return p_tensor_metric;
+}
+
+
+tensor4* metric_kerr_derivative_covariant(tensor4* p_tensor_event, double mass_BH, double rot_param_a) {
+    if (rot_param_a > mass_BH) {
+        fprintf(stderr, "WARNING: Rotational parameter a exceeds BH mass. This would result in a naked singularity.");
+    }
+
+    tensor4* p_tensor_metric = tensor4_zeros(3);
+
+    double radius = p_tensor_event->vals[1];
+    double sin_theta = sin(p_tensor_event->vals[2]);
+    double cos_theta = cos(p_tensor_event->vals[2]);
+
+    double sigma = radius * radius + rot_param_a * rot_param_a * cos_theta * cos_theta;
+    double delta = radius * radius - 2.0 * mass_BH * radius + rot_param_a * rot_param_a;
+    double dsigma_dtheta = -2.0 * rot_param_a * rot_param_a * cos_theta * sin_theta;
+
+    p_tensor_metric->vals[16] = 2.0 * mass_BH / sigma - 4.0 * mass_BH * radius * radius / (sigma * sigma); // t-t,r 
+    p_tensor_metric->vals[21] = 2.0 * radius / delta + 2.0 * (mass_BH - radius) * sigma / (delta * delta); // r-r,r
+    p_tensor_metric->vals[26] = 2.0 * radius; // theta-theta,r
+    p_tensor_metric->vals[31] = (2.0 * radius + (2.0 * mass_BH * rot_param_a * rot_param_a / sigma - 4.0 * mass_BH * radius * radius * rot_param_a * rot_param_a / (sigma * sigma)) * sin_theta * sin_theta) * sin_theta * sin_theta; // phi-phi,r
+    p_tensor_metric->vals[19] = 4.0 * mass_BH * radius * radius * rot_param_a * sin_theta * sin_theta / (sigma * sigma) - 2.0 * mass_BH * rot_param_a * sin_theta * sin_theta / (sigma * sigma); // t-phi,r
+    p_tensor_metric->vals[28] = p_tensor_metric->vals[19]; // phi-t,r
+
+    p_tensor_metric->vals[32] = -2.0 * mass_BH * radius * dsigma_dtheta / (sigma * sigma); // t-t,theta 
+    p_tensor_metric->vals[37] = dsigma_dtheta / delta; // r-r,theta
+    p_tensor_metric->vals[42] = dsigma_dtheta; // theta-theta,theta
+    p_tensor_metric->vals[47] = 2.0 * sin_theta * cos_theta * (radius * radius + rot_param_a * rot_param_a + 2.0 * mass_BH * radius * rot_param_a * rot_param_a * sin_theta * sin_theta / sigma) + (4.0 * sin_theta * cos_theta * mass_BH * radius * rot_param_a * rot_param_a / sigma - 2.0 * mass_BH * radius * rot_param_a * rot_param_a * sin_theta * sin_theta * dsigma_dtheta / (sigma * sigma)) * sin_theta * sin_theta; // phi-phi,theta
+    p_tensor_metric->vals[35] = 2.0 * mass_BH * radius * rot_param_a * sin_theta * sin_theta * dsigma_dtheta / (sigma * sigma) - 4.0 * mass_BH * radius * rot_param_a * sin_theta * cos_theta / sigma; // t-phi,theta
+    p_tensor_metric->vals[44] = p_tensor_metric->vals[35]; // phi-t,theta
     return p_tensor_metric;
 }
