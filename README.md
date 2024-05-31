@@ -73,9 +73,16 @@ A program to compute images of black holes (or other objects) while obeying gene
 - [X] Christoffel symbols
 
 - [ ] Geodesic tracing
+  - [ ] Evolvers
+    - [ ] RK4
+    - [ ] Euler
+  - [ ] Ray-Object collision detection
 
 - [ ] Objects to render
-  - [ ] Ray-Object collision detection
+  - [ ] Object classes
+    - [ ] Sphere
+    - [ ] Disk
+    - [ ] Cube(oid)
   - [ ] Textures
   - [ ] Texture colour redshifting
 
