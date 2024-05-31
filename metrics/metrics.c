@@ -191,15 +191,15 @@ tensor4* metric_kerr_derivative_covariant(tensor4* p_tensor_event, double mass_B
     p_tensor_metric->vals[16] = 2.0 * mass_BH / sigma - 4.0 * mass_BH * radius * radius / (sigma * sigma); // t-t,r 
     p_tensor_metric->vals[21] = 2.0 * radius / delta + 2.0 * (mass_BH - radius) * sigma / (delta * delta); // r-r,r
     p_tensor_metric->vals[26] = 2.0 * radius; // theta-theta,r
-    p_tensor_metric->vals[31] = (2.0 * radius + (2.0 * mass_BH * rot_param_a * rot_param_a / sigma - 4.0 * mass_BH * radius * radius * rot_param_a * rot_param_a / (sigma * sigma)) * sin_theta * sin_theta) * sin_theta * sin_theta; // phi-phi,r
-    p_tensor_metric->vals[19] = 4.0 * mass_BH * radius * radius * rot_param_a * sin_theta * sin_theta / (sigma * sigma) - 2.0 * mass_BH * rot_param_a * sin_theta * sin_theta / (sigma * sigma); // t-phi,r
+    p_tensor_metric->vals[31] = (2.0 * radius + (2.0 - 4.0 * radius * radius / sigma) * mass_BH * rot_param_a * rot_param_a * sin_theta * sin_theta / sigma) * sin_theta * sin_theta; // phi-phi,r
+    p_tensor_metric->vals[19] = (4.0 * radius * radius / sigma - 2.0) * sin_theta * sin_theta * mass_BH * rot_param_a / sigma; // t-phi,r
     p_tensor_metric->vals[28] = p_tensor_metric->vals[19]; // phi-t,r
 
     p_tensor_metric->vals[32] = -2.0 * mass_BH * radius * dsigma_dtheta / (sigma * sigma); // t-t,theta 
     p_tensor_metric->vals[37] = dsigma_dtheta / delta; // r-r,theta
     p_tensor_metric->vals[42] = dsigma_dtheta; // theta-theta,theta
-    p_tensor_metric->vals[47] = 2.0 * sin_theta * cos_theta * (radius * radius + rot_param_a * rot_param_a + 2.0 * mass_BH * radius * rot_param_a * rot_param_a * sin_theta * sin_theta / sigma) + (4.0 * sin_theta * cos_theta * mass_BH * radius * rot_param_a * rot_param_a / sigma - 2.0 * mass_BH * radius * rot_param_a * rot_param_a * sin_theta * sin_theta * dsigma_dtheta / (sigma * sigma)) * sin_theta * sin_theta; // phi-phi,theta
-    p_tensor_metric->vals[35] = 2.0 * mass_BH * radius * rot_param_a * sin_theta * sin_theta * dsigma_dtheta / (sigma * sigma) - 4.0 * mass_BH * radius * rot_param_a * sin_theta * cos_theta / sigma; // t-phi,theta
+    p_tensor_metric->vals[47] = 2.0 * sin_theta * cos_theta * (radius * radius + rot_param_a * rot_param_a + 2.0 * mass_BH * radius * rot_param_a * rot_param_a * sin_theta * sin_theta / sigma) + (4.0 * cos_theta - 2.0 * sin_theta * dsigma_dtheta / sigma) * mass_BH * radius * rot_param_a * rot_param_a * sin_theta * sin_theta * sin_theta / sigma; // phi-phi,theta
+    p_tensor_metric->vals[35] = (2.0 * sin_theta * dsigma_dtheta / sigma - 4.0 * cos_theta) * mass_BH * radius * rot_param * sin_theta / sigma; // t-phi,theta
     p_tensor_metric->vals[44] = p_tensor_metric->vals[35]; // phi-t,theta
     return p_tensor_metric;
 }
