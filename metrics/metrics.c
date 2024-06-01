@@ -23,6 +23,13 @@ tensor4* metric(enum Metrics metric_type, enum Covariance cov, int th_derivative
 }
 
 
+tensor4* metric_numerical_derivative(enum Metrics metric_type, enum Covariance cov, int th_derivative, tensor4* p_tensor_event, double* params) {
+    // TODO
+    fprintf(stderr, "ERROR: metric_numerical_derivative not implemented");
+    return NULL;
+}
+
+
 tensor4* metric_bh(enum Covariance cov, int th_derivative, tensor4* p_tensor_event, double mass_BH, double rot_param_a) {
     if (cov == COVARIANT) {
         if (rot_param_a == 0) {
