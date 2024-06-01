@@ -8,6 +8,14 @@ enum Covariance {
     CONTRAVARIANT
 };
 
+enum Metrics {
+    BH,
+    SCHWARZSCHILD,
+    KERR
+};
+
+tensor4* metric(enum Metrics metric_type, enum Covariance cov, int th_derivative, tensor4* p_tensor_event, double* params);
+
 tensor4* metric_bh(enum Covariance cov, int th_derivative, tensor4* p_tensor_event, double mass_BH, double rot_param_a);
 
 tensor4* metric_schwarzschild(enum Covariance cov, tensor4* p_tensor_event, double mass_BH);
