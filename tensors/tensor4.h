@@ -8,6 +8,8 @@ typedef struct {
     int rank;
 } tensor4;
 
+void tensor4_free(tensor4* p_tens);
+
 tensor4* tensor4_zeros(int rank);
 
 tensor4* tensor4_add(tensor4* p_tensor_a, tensor4* p_tensor_b);

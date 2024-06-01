@@ -7,6 +7,13 @@
 #include "../util/array_util.h"
 #include "../util/constants.h"
 
+
+void tensor4_free(tensor4* p_tens) {
+    free(p_tens->vals);
+    free(p_tens);
+}
+
+
 tensor4* tensor4_zeros(int rank) {
     tensor4* p_tensor_out = malloc(sizeof(tensor4));
 
