@@ -5,6 +5,7 @@
 
 #include "../util/string_util.h"
 #include "../util/array_util.h"
+#include "../util/constants.h"
 
 #define DIFF_STEP 1.0e-50
 
@@ -195,4 +196,21 @@ if (recursion_depth == p_tensor->rank) {
 }
 
 return 0;
+}
+
+
+tensor4** tensor4_diff_steps() {
+    tensor4** p_tensors_out = malloc(4*sizeof(tensor4*));
+
+    p_tensors_out[0] = tensor4_zeros(1);
+    p_tensors_out[1] = tensor4_zeros(1);
+    p_tensors_out[2] = tensor4_zeros(1);
+    p_tensors_out[3] = tensor4_zeros(1);
+
+    p_tensors_out[0][0] = DIFF_STEP;
+    p_tensors_out[1][1] = DIFF_STEP;
+    p_tensors_out[2][2] = DIFF_STEP;
+    p_tensors_out[3][3] = DIFF_STEP;
+
+    return p_tensors_out;
 }
