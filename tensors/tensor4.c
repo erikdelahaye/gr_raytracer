@@ -196,24 +196,3 @@ if (recursion_depth == p_tensor->rank) {
 
 return 0;
 }
-
-
-tensor4* tensor4_derivative(tensor4* p_tensor, tensor4* p_event) {
-    tensor4* p_tensor_out = tensor4_zeros(p_tensor->rank + 1);
-
-    tensor4* p_dx0 = tensor4_zeros(1);
-    p_dx0->vals[0] = DIFF_STEP;
-    
-    tensor4* p_dx1 = tensor4_zeros(1);
-    p_dx0->vals[1] = DIFF_STEP;
-    
-    tensor4* p_dx2 = tensor4_zeros(1);
-    p_dx0->vals[2] = DIFF_STEP;
-    
-    tensor4* p_dx3 = tensor4_zeros(1);
-    p_dx0->vals[3] = DIFF_STEP;
-    
-    // TODO evaluate derivatives. Merge tensors with memcopy
-
-    return p_tensor_out;
-}
