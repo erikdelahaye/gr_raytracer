@@ -32,4 +32,6 @@ int tensor4_reorder_recursive(tensor4* p_tensor, int* indices_old, int* indices_
 
 tensor4** tensor4_diff_steps();
 
+tensor4* tensor4_copy(tensor4* p_tens);
+
 #endif
