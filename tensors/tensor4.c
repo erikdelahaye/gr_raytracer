@@ -96,6 +96,10 @@ tensor4* tensor4_mult(tensor4** pp_tensors, char* indices, int num) {
     int* output_indices = malloc(output_rank * sizeof(int));
 
     tensor4_mult_recursive_output_indexing(output_indices, 0, pp_tensors, num, double_occurrences, num_double_occurrences, &p_tensor_out);
+
+    free(indices);
+    free(double_occurrences);
+    free(output_indices);
     return p_tensor_out;
 }
 
@@ -104,6 +108,8 @@ int tensor4_mult_recursive_output_indexing(int* output_indices, int recursion_de
     if (recursion_depth == (*pp_tensor_out)->rank) {
         int* sum_indices = malloc(num_double_occurrences * sizeof(int));
         tensor4_mult_recursive_sum_indexing(output_indices, sum_indices, 0, pp_tensors, num, double_occurrences, num_double_occurrences, pp_tensor_out);
+
+        free(sum_indices);
     } else {
         for (int i = 0; i < 4; i++) {
             output_indices[recursion_depth] = i;
