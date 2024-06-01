@@ -11,7 +11,7 @@ A program to compute images of black holes (or other objects) while obeying gene
   - [X] Evaluating at array of indices
   - [X] Index reordering
   - [ ] Slicing
-  - [ ] Subtraction
+  - [X] Subtraction
   - [ ] Copying
 
 - [ ] Metrics
