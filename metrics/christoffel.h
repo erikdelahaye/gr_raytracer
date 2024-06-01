@@ -3,6 +3,6 @@
 
 #include "../tensors/tensor4.h"
 
-tensor4* christoffel_symbols(tensor4* p_metric_contravariant, tensor4* p_metric_derivative);
+tensor4* christoffel_symbols(enum Metrics metric_type, tensor4* p_tensor_event, double* params);
 
 #endif
