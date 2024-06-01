@@ -46,7 +46,7 @@ tensor4* tensor4_add(tensor4* p_tensor_a, tensor4* p_tensor_b) {
 
 tensor4* tensor4_subtract(tensor4* p_tensor_a, tensor4* p_tensor_b) {
     if (p_tensor_a->rank != p_tensor_b->rank) {
-        fprintf(stderr, "tensor4_add recieved tensors of different ranks\n");
+        fprintf(stderr, "tensor4_subtract recieved tensors of different ranks\n");
         return NULL;
     }
 
