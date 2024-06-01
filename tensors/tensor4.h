@@ -12,6 +12,8 @@ tensor4* tensor4_zeros(int rank);
 
 tensor4* tensor4_add(tensor4* p_tensor_a, tensor4* p_tensor_b);
 
+tensor4* tensor4_subtract(tensor4* p_tensor_a, tensor4* p_tensor_b);
+
 tensor4* tensor4_mult(tensor4** pp_tensors, char* indices, int num);
 
 int tensor4_mult_recursive_output_indexing(int* output_indices, int recursion_depth, tensor4** pp_tensors, int num, int** double_occurrences, int num_double_occurrences, tensor4** pp_tensor_out);

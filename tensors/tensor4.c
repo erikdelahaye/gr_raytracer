@@ -38,6 +38,24 @@ tensor4* tensor4_add(tensor4* p_tensor_a, tensor4* p_tensor_b) {
 }
 
 
+tensor4* tensor4_subtract(tensor4* p_tensor_a, tensor4* p_tensor_b) {
+    if (p_tensor_a->rank != p_tensor_b->rank) {
+        fprintf(stderr, "tensor4_add recieved tensors of different ranks\n");
+        return NULL;
+    }
+
+    tensor4* p_tensor_out = tensor4_zeros(p_tensor_a->rank);
+
+    int num_entries = pow(4.0, (double) p_tensor_a->rank);
+
+    for (int i = 0; i < num_entries; i++) {
+        p_tensor_out->vals[i] = p_tensor_a->vals[i] - p_tensor_b->vals[i];
+    }
+
+    return p_tensor_out;
+}
+
+
 tensor4* tensor4_mult(tensor4** pp_tensors, char* indices, int num) {
     indices = remove_spaces(indices);
     
@@ -195,7 +213,7 @@ tensor4* tensor4_derivative(tensor4* p_tensor, tensor4* p_event) {
     tensor4* p_dx3 = tensor4_zeros(1);
     p_dx0->vals[3] = DIFF_STEP;
     
-    // TODO
+    // TODO evaluate derivatives. Merge tensors with memcopy
 
     return p_tensor_out;
 }
