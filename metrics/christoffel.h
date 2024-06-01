@@ -5,4 +5,6 @@
 
 tensor4* christoffel_symbols(enum Metrics metric_type, tensor4* p_tensor_event, double* params);
 
+tensor4* christoffel_symbols_derivative(enum Metrics metric_type, tensor4* p_tensor_event, double* params);
+
 #endif
