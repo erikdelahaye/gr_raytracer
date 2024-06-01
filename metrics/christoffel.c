@@ -13,16 +13,25 @@ tensor4* christoffel_symbols(enum Metrics metric_type, tensor4* p_tensor_event, 
 
     tensor4* p_sum_2 = tensor4_reorder(p_metric_derivative, "rnm", "rmn");
 
-    tensor4* p_sum_3 = tensor4_reorder(p_metric_derivative, "mnr", "rmn");
-    p_sum_3 = tensor4_scalar_mult(p_sum_3, -1.0);
+    tensor4* p_sum_3_neg = tensor4_reorder(p_metric_derivative, "mnr", "rmn");
+    tensor4* p_sum_3 = tensor4_scalar_mult(p_sum_3_neg, -1.0);
 
-    tensor4* p_sum = tensor4_add(p_metric_derivative, p_sum_2);
-    p_sum = tensor4_add(p_sum, p_sum_3);
+    tensor4* p_sum_12 = tensor4_add(p_metric_derivative, p_sum_2);
+    tensor4* p_sum = tensor4_add(p_sum_12, p_sum_3);
 
     tensor4* pp_tensors[2] = {p_metric_contravariant, p_sum};
 
-    tensor4* p_tensor_out = tensor4_mult(pp_tensors, "srrmn", 2);
-    p_tensor_out = tensor4_scalar_mult(p_tensor_out, 0.5);
+    tensor4* p_2_tensor_out = tensor4_mult(pp_tensors, "srrmn", 2);
+    tensor4* p_tensor_out = tensor4_scalar_mult(p_2_tensor_out, 0.5);
+
+    tensor4_free(p_metric_contravariant);
+    tensor4_free(p_metric_derivative);
+    tensor4_free(p_sum_2);
+    tensor4_free(p_sum_3_neg);
+    tensor4_free(p_sum_3);
+    tensor4_free(p_sum_12);
+    tensor4_free(p_sum);
+    tensor4_free(p_2_tensor_out);
     return p_tensor_out;
 }
 
@@ -30,30 +39,38 @@ tensor4* christoffel_symbols(enum Metrics metric_type, tensor4* p_tensor_event, 
 tensor4* christoffel_symbols_derivative(enum Metrics metric_type, tensor4* p_tensor_event, double* params) {
     tensor4** christ_diff = malloc(4*sizeof(tensor4*));
 
+    tensor4** pp_tensor_diff_steps = tensor4_diff_steps();
+
     for (int i = 0; i < 4; i++) {
-        christ_diff[i] = tensor4_scalar_mult(
-                             tensor4_subtract(
-                                 christoffel_symbols(
-                                     metric_type, 
-                                     tensor4_add(
-                                         p_tensor_event, 
-                                         tensor4_diff_steps()[i]), 
-                                     params), 
-                                 christoffel_symbols(
-                                     metric_type, 
-                                     tensor4_subtract(
-                                         p_tensor_event, 
-                                         tensor4_diff_steps()[i]), 
-                                     params)), 
-                             0.5 / DIFF_STEP);
+        tensor4* p_tensor_event_plus = tensor4_add(p_tensor_event, pp_tensor_diff_steps[i]);
+        tensor4* p_tensor_event_minus = tensor4_subtract(p_tensor_event, pp_tensor_diff_steps[i]);
+
+        tensor4* christ_plus = christoffel_symbols(metric_type, p_tensor_event_plus, params);
+        tensor4* christ_minus = christoffel_symbols(metric_type, p_tensor_event_minus, params);
+
+        tensor4* christ_difference_i = tensor4_subtract(christ_plus, christ_minus);
+
+        christ_diff[i] = tensor4_scalar_mult(christ_difference_i, 0.5 / DIFF_STEP);
+
+        tensor4_free(pp_tensor_diff_steps[i]);
+        tensor4_free(p_tensor_event_plus);
+        tensor4_free(p_tensor_event_minus);
+        tensor4_free(christ_plus);
+        tensor4_free(christ_minus);
+        tensor4_free(christ_difference_i);
     }
+
+    free(pp_tensor_diff_steps);
+
 
     tensor4* p_tens_out = tensor4_zeros(4);
 
-    memcpy(p_tens_out->vals, christ_diff[0]->vals, 64*sizeof(double));
-    memcpy(p_tens_out->vals+64, christ_diff[1]->vals, 64*sizeof(double));
-    memcpy(p_tens_out->vals+128, christ_diff[2]->vals, 64*sizeof(double));
-    memcpy(p_tens_out->vals+192, christ_diff[3]->vals, 64*sizeof(double));
+    for (int i = 0; i < 4; i++) {
+        memcpy(p_tens_out->vals + i*64, christ_diff[i]->vals, 64*sizeof(double));
+        tensor4_free(christ_diff[i]);
+    }
+
+    free(christ_diff);
 
     return p_tens_out;
 }
