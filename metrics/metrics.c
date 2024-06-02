@@ -7,13 +7,13 @@
 
 tensor4* metric(enum Metrics metric_type, enum Covariance cov, int th_derivative, tensor4* p_tensor_event, double* params) {
     switch (metric_type) {
-        BH: // params: mass_BH, rot_param_a
+        case BH: // params: mass_BH, rot_param_a
             return metric_bh(cov, th_derivative, p_tensor_event, params[0], params[1]);
 
-        SCHWARZSCHILD: // params: mass_BH
+        case SCHWARZSCHILD: // params: mass_BH
             return metric_bh(cov, th_derivative, p_tensor_event, params[0], 0.0);
 
-        KERR: // params: mass_BH, rot_param_a
+        case KERR: // params: mass_BH, rot_param_a
             return metric_bh(cov, th_derivative, p_tensor_event, params[0], params[1]);
 
         default:
