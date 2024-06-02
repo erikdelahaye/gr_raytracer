@@ -75,7 +75,9 @@ tensor4* tensor4_mult(tensor4** pp_tensors, char* indices, int num) {
             if (indices[first_occurrence] == indices[second_occurrence]) {
                 double_occurrences = realloc(double_occurrences, (num_double_occurrences+1)*sizeof(int*));
                 
-                int occurrences[2] = {first_occurrence, second_occurrence};
+                int* occurrences = malloc(2*sizeof(int));
+                occurrences[0] = first_occurrence;
+                occurrences[1] = second_occurrence;
                 double_occurrences[num_double_occurrences] = occurrences;
 
                 num_double_occurrences++;
@@ -97,6 +99,10 @@ tensor4* tensor4_mult(tensor4** pp_tensors, char* indices, int num) {
 
     tensor4_mult_recursive_output_indexing(output_indices, 0, pp_tensors, num, double_occurrences, num_double_occurrences, &p_tensor_out);
 
+
+    for (int i = 0; i < num_double_occurrences; i++) {
+        free(double_occurrences[i]);
+    }
     free(indices);
     free(double_occurrences);
     free(output_indices);
