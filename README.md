@@ -12,7 +12,7 @@ A program to compute images of black holes (or other objects) while obeying gene
   - [X] Index reordering
   - [ ] Slicing
   - [X] Subtraction
-  - [ ] Copying
+  - [X] Copying
 
 - [ ] Metrics
   - [ ] Black hole
