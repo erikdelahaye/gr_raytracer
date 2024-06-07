@@ -234,7 +234,7 @@ tensor4** tensor4_diff_steps() {
 
 
 tensor4* tensor4_copy(tensor4* p_tens) {
-    tensor4* tens_out;
+    tensor4* tens_out = malloc(sizeof(tensor4));
     tens_out->rank = p_tens->rank;
     tens_out->vals = malloc(((int) pow(4.0, (double) p_tens->rank)) * sizeof(double));
     memcpy(tens_out->vals, p_tens->vals, ((int) pow(4.0, (double) p_tens->rank)) * sizeof(double));
