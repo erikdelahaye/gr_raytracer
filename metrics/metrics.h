@@ -9,6 +9,7 @@ enum Covariance {
 };
 
 enum Metrics {
+    MINKOWSKI,
     BH,
     SCHWARZSCHILD,
     KERR
@@ -35,6 +36,8 @@ tensor4* metric_kerr_covariant(tensor4* p_tensor_event, double mass_BH, double r
 tensor4* metric_kerr_contravariant(tensor4* p_tensor_event, double mass_BH, double rot_param_a);
 
 tensor4* metric_kerr_derivative_covariant(tensor4* p_tensor_event, double mass_BH, double rot_param_a);
+
+tensor4* metric_minkowski(int th_derivative);
 
 // TODO: tensor4* metric_wormhole_covariant();
 
