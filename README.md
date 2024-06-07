@@ -74,7 +74,7 @@ A program to compute images of black holes (or other objects) while obeying gene
 
 - [ ] Geodesic tracing
   - [ ] Evolvers
-    - [ ] RK4
+    - [X] RK4
     - [ ] Euler
   - [ ] Ray-Object collision detection
 
