@@ -16,6 +16,9 @@ tensor4* metric(enum Metrics metric_type, enum Covariance cov, int th_derivative
         case KERR: // params: mass_BH, rot_param_a
             return metric_bh(cov, th_derivative, p_tensor_event, params[0], params[1]);
 
+        case MINKOWSKI:
+            return metric_minkowski(th_derivative);
+
         default:
             fprintf(stderr, "ERROR: metric type not recognised\n");
             return NULL;
@@ -226,4 +229,21 @@ tensor4* metric_kerr_derivative_covariant(tensor4* p_tensor_event, double mass_B
     p_tensor_metric->vals[35] = (2.0 * sin_theta * dsigma_dtheta / sigma - 4.0 * cos_theta) * mass_BH * radius * rot_param_a * sin_theta / sigma; // t-phi,theta
     p_tensor_metric->vals[44] = p_tensor_metric->vals[35]; // phi-t,theta
     return p_tensor_metric;
+}
+
+
+tensor4* metric_minkowski(int th_derivative) {
+    if (th_derivative == 0) {
+        tensor4* p_tens_out = tensor4_zeros(2);
+        p_tens_out->vals[0] = -1.0;
+        p_tens_out->vals[5] = 1.0;
+        p_tens_out->vals[10] = 1.0;
+        p_tens_out->vals[15] = 1.0;
+        return p_tens_out;
+    } else if (th_derivative >= 1) {
+        tensor4* p_tens_out = tensor4_zeros(3);
+        return p_tens_out;
+    }
+
+    return NULL;
 }

@@ -15,6 +15,7 @@ A program to compute images of black holes (or other objects) while obeying gene
   - [X] Copying
 
 - [ ] Metrics
+  - [X] Minkowski
   - [ ] Black hole
     - [X] Schwarzschild
       - [X] Covariant
@@ -43,6 +44,7 @@ A program to compute images of black holes (or other objects) while obeying gene
     - [ ] Contravariant
 
 - [ ] Metric derivatives
+  - [X] Minkowski
   - [ ] Black hole
     - [ ] Schwarzschild
       - [X] Covariant
