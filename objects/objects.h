@@ -5,9 +5,8 @@
 #include "../vectors/vec3.h"
 
 enum Objects {
-    SKYSPHERE,
-    DISK,
-    SPHERE
+    STAR,
+    DISK
 };
 
 typedef struct {

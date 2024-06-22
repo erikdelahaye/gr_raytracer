@@ -82,9 +82,8 @@ A program to compute images of black holes (or other objects) while obeying gene
 
 - [ ] Objects to render
   - [ ] Object classes
-    - [ ] Sphere
+    - [ ] Star
     - [ ] Disk
-    - [ ] Cube(oid)
   - [ ] Textures
   - [ ] Texture colour redshifting
 
