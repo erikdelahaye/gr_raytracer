@@ -1,4 +1,5 @@
 #include "rays.h"
+#include <stdio.h>
 
 int* cast_ray(tensor4* x_0, tensor4* v_0, enum Evolvers evolver, double* evolver_params, object* objects, enum Metrics metric_type, double* metric_params) {
     tensor4* x_new;
