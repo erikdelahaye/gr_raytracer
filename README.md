@@ -81,9 +81,9 @@ A program to compute images of black holes (or other objects) while obeying gene
   - [ ] Ray-Object collision detection
 
 - [ ] Objects to render
-  - [ ] Object classes
-    - [ ] Star
-    - [ ] Disk
+  - [X] Object classes
+    - [X] Star
+    - [X] Disk
   - [ ] Textures
   - [ ] Texture colour redshifting
 
